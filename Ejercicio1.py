@@ -1,7 +1,7 @@
 #Declarar variables
 
 nombre = "Juan"
-edad = 25
+edad = 30
 altura = 1.75
 
 #Imprimir informacion
