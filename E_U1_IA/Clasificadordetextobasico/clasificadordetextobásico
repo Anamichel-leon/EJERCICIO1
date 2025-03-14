@@ -1,0 +1,44 @@
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import accuracy_score
+
+
+
+mensajes = [
+    "Gana un viaje gratis, haz clic aquí",    
+    "¿Nos vemos a las 5 PM en la oficina?",  
+    "¡Oferta limitada! Compra ahora y ahorra",
+    "Recordatorio de la reunión de mañana",  
+    "¡Haz clic para obtener un préstamo fácil!" 
+]
+
+etiquetas = ['spam', 'No spam', 'spam', 'No spam', 'spam']  # Etiquetas correspondientes
+
+#
+vectorizador = CountVectorizer()
+X = vectorizador.fit_transform(mensajes)
+
+#
+X_train, X_test, y_train, y_test = train_test_split(X, etiquetas, test_size=0.3, random_state=42)
+
+
+modelo = MultinomialNB()
+modelo.fit(X_train, y_train)
+
+
+y_pred = modelo.predict(X_test)
+
+
+precision = accuracy_score(y_test, y_pred)
+print(f'Precisión del modelo: {precision * 100:.2f}%')
+
+# Función para predecir si un mensaje es spam o no
+def predecir_mensaje():
+    mensaje_usuario = input("Ingresa el mensaje para clasificar (spam o no spam): ")
+    X_nuevo = vectorizador.transform([mensaje_usuario])  # Transformamos el mensaje
+    prediccion = modelo.predict(X_nuevo)  # Realizamos la predicción
+    print(f'El mensaje es: {prediccion[0]}')  
+
+
+predecir_mensaje()
